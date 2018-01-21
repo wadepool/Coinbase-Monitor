@@ -19,6 +19,8 @@ s          = requests.Session()
 from classes.coinBaseChange import Change
 Change = Change()
 
+from classes.Discord import Discord
+Discord = Discord()
 
 
 class Monitor:
@@ -28,6 +30,11 @@ class Monitor:
 		Warned      = False
 		Cryptos     = config['Monitor']['Name']
 		sleepTime   = config['Monitor']['Sleep']
+
+		alertUrl	= config['Discord']['Webhook']
+		AlertMe		= config['Discord']['Alert']
+		if AlertMe == "True":
+			Discord.initiate(alertUrl)
 
 		while True:
 
@@ -49,7 +56,8 @@ class Monitor:
 				hourChangeAPI      = s.get(HourAPIURL).json()['data']['prices']
 				changeCrypto       = float(hourChangeAPI[1]['price']) - float(hourChangeAPI[-1]['price'])
 
-				log(Change.change(Crypto, currentPrice, changeCrypto))
+
+				log(Change.alertChange(Crypto, currentPrice, changeCrypto, config))
 
 			log("--------------------------------------------------------------")
 
@@ -60,6 +68,3 @@ class Monitor:
 
 			overWrite("", True)
 			log("%s%sRe-Scraping!%s" % (Style.BRIGHT,Fore.BLUE, Style.RESET_ALL))
-
-
-

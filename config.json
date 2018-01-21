@@ -1,8 +1,15 @@
 {
     "Monitor":{
-        	
+
     	"Name":["btc","lTC","eTh"],
-        "Sleep":5
+        "Sleep":15
+
+    },
+    "Discord":{
+
+      "Webhook":"",
+      "Target":10750,
+      "Alert":"False"
 
     }
 }
